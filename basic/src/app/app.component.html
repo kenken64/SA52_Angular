@@ -1,0 +1,27 @@
+<div style="text-align: center">
+  <h1>{{ title }}</h1>
+</div>
+<p>{{ numberOfPpl }}</p>
+
+<ul>
+  <li *ngFor="let item of fruits; let i = index">{{ i + 1 }}. {{ item }}</li>
+</ul>
+
+<p *ngIf="fruits.length >= 3">More than 3 fruits</p>
+<p *ngIf="fruits.length <= 0">No fruits in the basket !</p>
+
+<input
+  type="text"
+  [disabled]="isDisabled"
+  [ngClass]="{ 'grey-border': isDisabled, 'blue-border': !isDisabled }"
+/>
+
+<button (click)="pressButton()">Enable</button>
+<button (click)="pressButton2Disable()">Disable</button>
+
+<p *ngIf="!isDisabled">Button was pressed !</p>
+
+<app-font-size
+  [message]="title"
+  (onFontSize)="sizeChanged($event)"
+></app-font-size>
