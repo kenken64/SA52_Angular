@@ -1,0 +1,31 @@
+.todo-complete {
+  text-decoration: line-through;
+}
+
+mat-toolbar {
+  justify-content: space-between;
+}
+
+.content {
+  padding: 16px;
+}
+
+.content > mat-card {
+  margin-bottom: 16px;
+}
+
+span {
+  display: flex;
+  white-space: pre-wrap !important;
+  overflow-x: hidden !important;
+  flex-wrap: nowrap;
+}
+
+.example-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.example-container > * {
+  width: 100%;
+}

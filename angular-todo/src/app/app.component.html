@@ -1,0 +1,136 @@
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <span>My Todo App</span>
+  </mat-toolbar-row>
+</mat-toolbar>
+
+<div class="content">
+  <div
+    fxFlexFill
+    fxLayout="row wrap"
+    fxLayout.xs="column wrap"
+    fx:ayput.sm="column wrap"
+    fxLayoutGap="15px grid"
+  >
+    <!-- Todo App form-->
+    <div [fxFlex]="100 / gridColumns + '%'">
+      <form [formGroup]="form" (ngSubmit)="addTodo()" #formDirective="ngForm">
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title>
+              <h2 *ngIf="!isEditMode">Add ToDo �</h2>
+              <h2 *ngIf="isEditMode">Edit ToDo �</h2>
+            </mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <mat-form-field>
+              <input matInput formControlName="task" />
+            </mat-form-field>
+            <div>
+              <label>Priority</label>
+              <mat-radio-group
+                arial-label="Select an option"
+                formControlName="priority"
+              >
+                <mat-radio-button *ngFor="let p of priorities" value="{{ p }}"
+                  >{{ p }} &nbsp;</mat-radio-button
+                >
+              </mat-radio-group>
+            </div>
+            <mat-form-field>
+              <input
+                matInput
+                [matDatepicker]="picker"
+                formControlName="dueDate"
+                [min]="tomorrow"
+              />
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="picker"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+
+            <div>
+              <button
+                *ngIf="!isEditMode"
+                mat-raised-button
+                color="primary"
+                type="submit"
+                [disabled]="form.invalid"
+              >
+                Add
+              </button>
+              <button
+                *ngIf="isEditMode"
+                mat-raised-button
+                color="primary"
+                type="button"
+                [disabled]="form.invalid"
+                (click)="updateEdit(formDirective)"
+              >
+                Update
+              </button>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title><h2>List of ToDos �</h2></mat-card-title>
+          </mat-card-header>
+          <mat-card-content fxLayout="row wrap">
+            <mat-list role="list">
+              <mat-list-item
+                formArrayName="todos"
+                *ngFor="
+                  let todo of getTodosControls()['controls'];
+                  let i = index
+                "
+              >
+                <div [formGroupName]="i">
+                  <mat-checkbox
+                    formControlName="taskCheckbox"
+                    (change)="updateStatus(i)"
+                  >
+                    <span [ngClass]="{ 'todo-complete': todoValues[i].status }">
+                      {{ todoValues[i].task }} ({{ todoValues[i].priority }}) -
+                      {{ todoValues[i].dueDate | date }} &nbsp;</span
+                    >
+                  </mat-checkbox>
+                  <button
+                    type="button"
+                    mat-icon-button
+                    color="warn"
+                    (click)="onDelete(i, todoValues[i].taskId)"
+                  >
+                    <span class="material-icons">delete</span>
+                  </button>
+                  &nbsp;
+                  <button
+                    *ngIf="!isEditMode"
+                    type="button"
+                    mat-icon-button
+                    color="accent"
+                    (click)="onEdit(todoValues[i].taskId)"
+                  >
+                    <span class="material-icons">edit</span>
+                  </button>
+                  <button
+                    *ngIf="isEditMode"
+                    type="button"
+                    mat-icon-button
+                    color="accent"
+                    (click)="cancelEdit(formDirective)"
+                  >
+                    <span class="material-icons">close</span>
+                  </button>
+                </div>
+              </mat-list-item>
+            </mat-list>
+          </mat-card-content>
+        </mat-card>
+      </form>
+    </div>
+  </div>
+</div>
